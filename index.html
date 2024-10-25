@@ -10,11 +10,14 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
+      darkMode: 'selector',
       theme: {
         extend: {
           colors: {
             primary: '#DAFF00',
+            'dark-primary': '#312ECB',
             secondary: '#111111',
+            'dark-secondary': '#07041B',
             stroke: '#282828',
             black: '#0C0C0C',
             info: '#007AFF',
@@ -33,6 +36,27 @@
         }
       }
     }
+
+    const handleShrink = () => {
+      const navigation = document.getElementById("navigation");
+
+      if(navigation) {
+        navigation.classList.toggle("shrink")
+      }
+    }
+
+    const handleDarkMode = () => {
+      const html = document.querySelector("html");
+      const darkMode = document.getElementById("dark-mode-toggle");
+
+      if(html.classList.contains("dark")) {
+        html.classList.remove("dark");
+        darkMode.classList.remove("active");
+      } else {  
+        html.classList.add("dark");
+        darkMode.classList.add("active");
+      }
+    }
   </script>
   <style>
     body {
@@ -40,20 +64,78 @@
       font-style: normal;
       color: white;
     }
+
+    .shrink > div:last-of-type {
+      display: none;
+      transition-delay: 120ms;
+    }
+
+    .shrink > div > a > span, .shrink > ul > li > span {
+      
+      visibility: hidden;
+      opacity: 0;
+    }
+
+    .shrink > ul > li > span {
+      font-size: 0;
+    }
+    .shrink > ul > li > span:last-of-type {
+      width: 0;
+      height: 0;
+      padding: 0;
+    }
+
+    .shrink > ul > li {
+      justify-content: center;
+      column-gap: 0;
+    }
+
+    .nav * {
+      transition-property: all;
+      transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+      transition-duration: 150ms;
+    }
+
+    .nav.shrink {
+      width: 150px;
+    }
+
+    .nav.shrink > div#logo > a > span {
+      font-size: 0;
+    }
+
+    .nav.shrink button#button-shrink {
+      rotate: -180deg;
+    }
+
+    #dark-mode-toggle.active span {
+      margin-left: auto;
+    }
   </style>
 </head>
 <body class="bg-black flex gap-x-[30px] h-screen">
   <!-- Start of Navbar -->
-  <nav class="flex flex-col max-w-[280px] py-[50px] px-[30px] bg-black-secondary h-screen border-r border-stroke">
-    <a class="flex items-center gap-x-0.5 mb-[50px]" href="/">
-      <svg class="text-primary" width="50" height="39" viewBox="0 0 65 50" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M19.3688 5.20839C20.4842 3.5551 22.3483 2.56412 24.3426 2.56412H36.8946C41.7018 2.56412 44.5571 7.9348 41.8685 11.9198L30.0938 29.3723C28.9783 31.0256 27.1143 32.0166 25.1199 32.0166H12.5679C7.76074 32.0166 4.9055 26.6459 7.5941 22.6608L19.3688 5.20839Z" fill="#DAFF00"/>
-        <path d="M25.3688 34.7462C23.4729 34.7462 21.7008 35.6882 20.6405 37.2599C18.0846 41.0483 20.7989 46.1539 25.3688 46.1539H39.7599C41.7543 46.1539 43.6184 45.1629 44.7338 43.5096L56.5085 26.0571C59.1971 22.0721 56.3418 16.7014 51.5346 16.7014H45.116C43.1216 16.7014 41.2576 17.6924 40.1421 19.3457L31.5358 32.1019C30.4204 33.7552 28.5564 34.7462 26.562 34.7462H25.3688Z" fill="#DAFF00"/>
-      </svg>
-      <span class="font-bold text-white text-xl">Kreatop</span>
-    </a>
+  <nav class="nav flex flex-col w-[280px] py-[50px] px-[30px] bg-black-secondary h-screen border-r border-stroke transition-all" id="navigation">
+    <div class="flex items-center justify-between mb-[50px]" id="logo">
+      <a class="flex items-center gap-x-0.5" href="/">
+        <svg class="opacity-100 dark:w-0 dark:opacity-0" width="50" height="39" viewBox="0 0 65 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M19.3688 5.20839C20.4842 3.5551 22.3483 2.56412 24.3426 2.56412H36.8946C41.7018 2.56412 44.5571 7.9348 41.8685 11.9198L30.0938 29.3723C28.9783 31.0256 27.1143 32.0166 25.1199 32.0166H12.5679C7.76074 32.0166 4.9055 26.6459 7.5941 22.6608L19.3688 5.20839Z" fill="#DAFF00"/>
+          <path d="M25.3688 34.7462C23.4729 34.7462 21.7008 35.6882 20.6405 37.2599C18.0846 41.0483 20.7989 46.1539 25.3688 46.1539H39.7599C41.7543 46.1539 43.6184 45.1629 44.7338 43.5096L56.5085 26.0571C59.1971 22.0721 56.3418 16.7014 51.5346 16.7014H45.116C43.1216 16.7014 41.2576 17.6924 40.1421 19.3457L31.5358 32.1019C30.4204 33.7552 28.5564 34.7462 26.562 34.7462H25.3688Z" fill="#DAFF00"/>
+        </svg>
+        <svg class="w-0 opacity-0 dark:w-fit dark:opacity-100" width="50" height="39" viewBox="0 0 65 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M19.3688 5.20839C20.4842 3.5551 22.3483 2.56412 24.3426 2.56412H36.8946C41.7018 2.56412 44.5571 7.9348 41.8685 11.9198L30.0938 29.3723C28.9783 31.0256 27.1143 32.0166 25.1199 32.0166H12.5679C7.76074 32.0166 4.9055 26.6459 7.5941 22.6608L19.3688 5.20839Z" fill="#007AFF"/>
+          <path d="M25.3688 34.7462C23.4729 34.7462 21.7008 35.6882 20.6405 37.2599C18.0846 41.0483 20.7989 46.1539 25.3688 46.1539H39.7599C41.7543 46.1539 43.6184 45.1629 44.7338 43.5096L56.5085 26.0571C59.1971 22.0721 56.3418 16.7014 51.5346 16.7014H45.116C43.1216 16.7014 41.2576 17.6924 40.1421 19.3457L31.5358 32.1019C30.4204 33.7552 28.5564 34.7462 26.562 34.7462H25.3688Z" fill="#312ECB"/>
+        </svg>
+        <span class="font-bold text-white text-xl">Kreatop</span>
+      </a>
+      <button class="flex items-center justify-center text-sm w-8 h-8 rounded-full border border-stroke rotate-90 hover:border-primary dark:hover:border-dark-primary transition-all" id="button-shrink" type="button" onclick="handleShrink()">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M16.6 7.95834L11.1667 13.3917C10.525 14.0333 9.47499 14.0333 8.83333 13.3917L3.39999 7.95834" stroke="white" stroke-width="2" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+    </div>
     <ul class="flex flex-col gap-y-4 mb-auto">
-      <li class="flex items-center gap-x-3 py-2.5 px-4 bg-primary rounded-full">
+      <li class="flex items-center gap-x-3 py-2.5 px-4 bg-primary dark:bg-dark-primary rounded-full">
         <img src="./assets/grid-5.svg" alt="" width="24" height="24">
         <span class="font-semibold text-base text-black">Overview</span>
       </li>
@@ -89,11 +171,11 @@
       </li>
     </ul>
     <div class="flex flex-col gap-y-5 px-4 py-5 border border-stroke rounded-[20px]">
-      <span class="p-4 w-[60px] h-[60px] bg-primary rounded-full">
+      <span class="p-4 w-[60px] h-[60px] bg-primary dark:bg-dark-primary rounded-full">
         <img src="./assets/code.svg" alt="upgrade-icon" width="28" height="28">
       </span>
       <h4 class="font-bold text-lg">Kreto AI Ready to <br/> Help You Grow</h4>
-      <button class="w-full py-2.5 px-5 text-black font-bold bg-primary rounded-full" type="button">
+      <button class="w-full py-2.5 px-5 text-black font-bold bg-primary dark:bg-dark-primary rounded-full" type="button">
         Upgrade Now
       </button>
     </div>
@@ -107,7 +189,7 @@
         <h1 class="font-bold mb-1 text-[32px]">Overview</h1>
         <p class="text-text-secondary text-lg">Growth reporting of your account</p>
       </div>
-      <div class="flex items-center">
+      <div class="flex items-center pr-[30px]">
         <div class="flex items-center gap-x-[14px] pr-6 border-r border-stroke">
           <button class="flex items-center justify-center h-[50px] w-[50px] border border-stroke rounded-full">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -133,6 +215,13 @@
             <img src="./assets/profile-image.png" alt="profile-shayna" width="40" height="40">
           </a>
         </div>
+        <div class="flex items-center w-24 h-12 px-1 border border-stroke rounded-full ml-" id="dark-mode-toggle">
+          <span class="flex items-center justify-center w-10 h-10 bg-primary rounded-full cursor-pointer transition-all" onclick="handleDarkMode()">
+            <svg class="text-white" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M13.844 1.88601L12.416 2.66701L13.844 3.44801L14.625 4.87601L15.406 3.44801L16.834 2.66701L15.406 1.88601L14.625 0.458008L13.844 1.88601ZM8.412 2.70001C7.10231 2.96575 5.88006 3.55535 4.85685 4.41497C3.83364 5.27458 3.04207 6.37683 2.55443 7.62106C2.06679 8.8653 1.89861 10.2119 2.06525 11.5378C2.23189 12.8638 2.72804 14.1268 3.5084 15.2117C4.28875 16.2966 5.32845 17.1687 6.53255 17.7484C7.73664 18.3281 9.06678 18.5969 10.4015 18.5303C11.7362 18.4637 13.033 18.0638 14.1734 17.3671C15.3138 16.6704 16.2615 15.6992 16.93 14.542C14.5552 14.5235 12.284 13.5672 10.6112 11.8813C8.93852 10.1955 7.99993 7.91688 8 5.54201C8 4.56201 8.131 3.60501 8.412 2.70001ZM0 10.542C0 5.01901 4.477 0.542008 10 0.542008H11.734L10.866 2.04201C10.287 3.04201 10 4.23201 10 5.54201C9.99985 6.57562 10.2286 7.59645 10.6698 8.53116C11.1111 9.46587 11.7538 10.2913 12.5519 10.9481C13.35 11.6049 14.2837 12.0768 15.2858 12.3299C16.288 12.583 17.3337 12.6111 18.348 12.412L20.03 12.085L19.487 13.711C18.162 17.679 14.417 20.542 10 20.542C4.477 20.542 0 16.065 0 10.542ZM18.5 4.95801L19.414 6.62801L21.084 7.54201L19.414 8.45601L18.5 10.126L17.586 8.45601L15.916 7.54201L17.586 6.62801L18.5 4.95801Z" fill="#111111"/>
+            </svg>
+          </span>
+        </div>
       </div>
     </header>
     <!-- End of Header on Main Board -->
@@ -150,7 +239,7 @@
           </button>
         </div>
         <ul class="grid grid-cols-3 gap-5">
-          <li class="bg-secondary px-5 py-[18px] border border-stroke rounded-2xl">
+          <li class="bg-secondary dark:bg-dark-secondary px-5 py-[18px] border border-stroke rounded-2xl">
             <div class="flex items-center gap-x-3 mb-5">
               <span class="flex items-center justify-center w-[50px] h-[50px] rounded-full bg-purple">
                 <img src="./assets/video-circle.svg" alt="reach" width="24" height="24">
@@ -164,7 +253,7 @@
               </span>
             </div>
           </li>
-          <li class="bg-secondary px-5 py-[18px] border border-stroke rounded-2xl">
+          <li class="bg-secondary dark:bg-dark-secondary px-5 py-[18px] border border-stroke rounded-2xl">
             <div class="flex items-center gap-x-3 mb-5">
               <span class="flex items-center justify-center w-[50px] h-[50px] rounded-full bg-info-secondary">
                 <img src="./assets/share.svg" alt="reach" width="24" height="24">
@@ -178,7 +267,7 @@
               </span>
             </div>
           </li>
-          <li class="bg-secondary px-5 py-[18px] border border-stroke rounded-2xl">
+          <li class="bg-secondary dark:bg-dark-secondary px-5 py-[18px] border border-stroke rounded-2xl">
             <div class="flex items-center gap-x-3 mb-5">
               <span class="flex items-center justify-center w-[50px] h-[50px] rounded-full bg-[#CB372E]">
                 <img src="./assets/messages-2.svg" alt="reach" width="24" height="24">
@@ -192,7 +281,7 @@
               </span>
             </div>
           </li>
-          <li class="bg-secondary px-5 py-[18px] border border-stroke rounded-2xl">
+          <li class="bg-secondary dark:bg-dark-secondary px-5 py-[18px] border border-stroke rounded-2xl">
             <div class="flex items-center gap-x-3 mb-5">
               <span class="flex items-center justify-center w-[50px] h-[50px] rounded-full bg-success-tertiary">
                 <img src="./assets/cards.svg" alt="reach" width="24" height="24">
@@ -206,7 +295,7 @@
               </span>
             </div>
           </li>
-          <li class="bg-secondary px-5 py-[18px] border border-stroke rounded-2xl">
+          <li class="bg-secondary dark:bg-dark-secondary px-5 py-[18px] border border-stroke rounded-2xl">
             <div class="flex items-center gap-x-3 mb-5">
               <span class="flex items-center justify-center w-[50px] h-[50px] rounded-full bg-purple-secondary">
                 <img src="./assets/note.svg" alt="reach" width="24" height="24">
@@ -220,7 +309,7 @@
               </span>
             </div>
           </li>
-          <li class="bg-secondary px-5 py-[18px] border border-stroke rounded-2xl">
+          <li class="bg-secondary dark:bg-dark-secondary px-5 py-[18px] border border-stroke rounded-2xl">
             <div class="flex items-center gap-x-3 mb-5">
               <span class="flex items-center justify-center w-[50px] h-[50px] rounded-full bg-info-tertiary">
                 <img src="./assets/profile-2user.svg" alt="reach" width="24" height="24">
@@ -385,7 +474,7 @@
             <div class="w-[3px] h-[184px] bg-white"></div>
             <div class="flex items-center gap-x-4 h-fit -mt-4 -ml-[7px]">
               <div class="w-3 h-3 rounded-full bg-white"></div>
-              <div class="flex flex-col gap-y-2.5 h-fit bg-secondary p-2.5 border border-stroke rounded-2xl">
+              <div class="flex flex-col gap-y-2.5 h-fit bg-secondary dark:bg-dark-secondary p-2.5 border border-stroke rounded-2xl">
                 <h4 class="flex items-center gap-x-2 font-semibold text-sm">
                   <span class="w-3 h-3 rounded-full bg-purple"></span>
                   <span>$50,391 Revenue</span>
@@ -405,9 +494,9 @@
       </div>
       <!-- End of Statistics Section -->
       <!-- Start of Balance Section -->
-      <div class="flex flex-col gap-y-[30px] p-[30px] bg-secondary w-[440px] overflow-y-auto h-[calc(100vh_-_112px)] z-10">
+      <div class="flex flex-col gap-y-[30px] p-[30px] bg-secondary dark:bg-dark-secondary w-[440px] overflow-y-auto h-[calc(100vh_-_112px)] z-10">
         <!-- Start of Card Component -->
-        <div class="flex flex-col gap-y-5 bg-primary p-[30px] pb-4 rounded-[36px]">
+        <div class="flex flex-col gap-y-5 bg-primary dark:bg-dark-primary p-[30px] pb-4 rounded-[36px]">
           <svg width="65" height="50" viewBox="0 0 65 50" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M19.3688 5.20839C20.4842 3.5551 22.3483 2.56412 24.3426 2.56412H36.8946C41.7018 2.56412 44.5571 7.9348 41.8685 11.9198L30.0938 29.3723C28.9783 31.0256 27.1143 32.0166 25.1199 32.0166H12.5679C7.76074 32.0166 4.9055 26.6459 7.5941 22.6608L19.3688 5.20839Z" fill="#111111"/>
             <path d="M25.3688 34.7462C23.4729 34.7462 21.7008 35.6882 20.6405 37.2599C18.0846 41.0483 20.7989 46.1539 25.3688 46.1539H39.7599C41.7543 46.1539 43.6184 45.1629 44.7338 43.5096L56.5085 26.0571C59.1971 22.0721 56.3418 16.7014 51.5346 16.7014H45.116C43.1216 16.7014 41.2576 17.6924 40.1421 19.3457L31.5358 32.1019C30.4204 33.7552 28.5564 34.7462 26.562 34.7462H25.3688Z" fill="#111111"/>
