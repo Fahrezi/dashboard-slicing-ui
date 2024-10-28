@@ -59,6 +59,11 @@
     }
   </script>
   <style>
+    * {
+      transition-property: all;
+      transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+      transition-duration: 150ms;
+    }
     body {
       font-family: "Poppins", sans-serif;
       font-style: normal;
@@ -71,7 +76,6 @@
     }
 
     .shrink > div > a > span, .shrink > ul > li > span {
-      
       visibility: hidden;
       opacity: 0;
     }
@@ -108,8 +112,82 @@
       rotate: -180deg;
     }
 
-    #dark-mode-toggle.active span {
-      margin-left: auto;
+    .month-graph div {
+      height: 0 !important;
+    }
+
+    #bar-graph * {
+      transition-property: height;
+      transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+      transition-duration: 500ms;
+    }
+
+    #data-info {
+      opacity: 0;
+      transition-property: opacity;
+      transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+      transition-duration: 500ms;
+    }
+
+    #data-info.active {
+      opacity: 1;
+      transition-property: opacity;
+      transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+      transition-duration: 500ms;
+    }
+
+    #dark-mode-toggle.active {
+      left: calc(100% - 40px);
+    }
+
+    #dark-mode-toggle svg:first-of-type {
+      opacity: 1;
+      width: auto;
+      animation-name: dark-mode-up;
+      animation-duration: 400ms;
+      animation-iteration-count: 1;
+    }
+
+    #dark-mode-toggle svg:last-of-type {
+      opacity: 0;
+      width: 0;
+      animation-name: dark-mode-down;
+      animation-duration: 400ms;
+      animation-iteration-count: 1;
+    }
+
+    #dark-mode-toggle.active svg:first-of-type {
+      opacity: 0;
+      width: 0;
+      animation-name: dark-mode-down;
+      animation-duration: 400ms;
+      animation-iteration-count: 1;
+    }
+
+    #dark-mode-toggle.active svg:last-of-type {
+      opacity: 1;
+      width: auto;
+      animation-name: dark-mode-up;
+      animation-duration: 400ms;
+      animation-iteration-count: 1;
+    }
+
+    @keyframes dark-mode-down {
+      from {
+        translate: 0 0;
+      }
+      to {
+        translate: 50% 150%;
+      }
+    }
+    
+    @keyframes dark-mode-up {
+      from {
+        translate: -50% 150%;
+      }
+      to {
+        translate: 0 0;
+      }
     }
   </style>
 </head>
@@ -215,13 +293,18 @@
             <img src="./assets/profile-image.png" alt="profile-shayna" width="40" height="40">
           </a>
         </div>
-        <div class="flex items-center w-24 h-12 px-1 border border-stroke rounded-full ml-" id="dark-mode-toggle">
-          <span class="flex items-center justify-center w-10 h-10 bg-primary rounded-full cursor-pointer transition-all" onclick="handleDarkMode()">
-            <svg class="text-white" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- Start of Dark Mode Button -->
+        <div class="flex items-center w-24 h-12 px-1 border border-stroke rounded-full relative">
+          <span class="flex items-center justify-center w-10 h-10 bg-primary dark:bg-dark-primary rounded-full cursor-pointer transition-all absolute left-0" id="dark-mode-toggle" onclick="handleDarkMode()">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M13.844 1.88601L12.416 2.66701L13.844 3.44801L14.625 4.87601L15.406 3.44801L16.834 2.66701L15.406 1.88601L14.625 0.458008L13.844 1.88601ZM8.412 2.70001C7.10231 2.96575 5.88006 3.55535 4.85685 4.41497C3.83364 5.27458 3.04207 6.37683 2.55443 7.62106C2.06679 8.8653 1.89861 10.2119 2.06525 11.5378C2.23189 12.8638 2.72804 14.1268 3.5084 15.2117C4.28875 16.2966 5.32845 17.1687 6.53255 17.7484C7.73664 18.3281 9.06678 18.5969 10.4015 18.5303C11.7362 18.4637 13.033 18.0638 14.1734 17.3671C15.3138 16.6704 16.2615 15.6992 16.93 14.542C14.5552 14.5235 12.284 13.5672 10.6112 11.8813C8.93852 10.1955 7.99993 7.91688 8 5.54201C8 4.56201 8.131 3.60501 8.412 2.70001ZM0 10.542C0 5.01901 4.477 0.542008 10 0.542008H11.734L10.866 2.04201C10.287 3.04201 10 4.23201 10 5.54201C9.99985 6.57562 10.2286 7.59645 10.6698 8.53116C11.1111 9.46587 11.7538 10.2913 12.5519 10.9481C13.35 11.6049 14.2837 12.0768 15.2858 12.3299C16.288 12.583 17.3337 12.6111 18.348 12.412L20.03 12.085L19.487 13.711C18.162 17.679 14.417 20.542 10 20.542C4.477 20.542 0 16.065 0 10.542ZM18.5 4.95801L19.414 6.62801L21.084 7.54201L19.414 8.45601L18.5 10.126L17.586 8.45601L15.916 7.54201L17.586 6.62801L18.5 4.95801Z" fill="#111111"/>
+            </svg>
+            <svg class="opacity-0 w-0" width="24" height="25" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 19.3054C12.2652 19.3054 12.5196 19.4107 12.7071 19.5983C12.8946 19.7858 13 20.0401 13 20.3054V21.3054C13 21.5706 12.8946 21.8249 12.7071 22.0125C12.5196 22.2 12.2652 22.3054 12 22.3054C11.7348 22.3054 11.4804 22.2 11.2929 22.0125C11.1053 21.8249 11 21.5706 11 21.3054V20.3054C11 20.0401 11.1053 19.7858 11.2929 19.5983C11.4804 19.4107 11.7348 19.3054 12 19.3054ZM18.364 17.2554L19.071 17.9624C19.2531 18.151 19.3539 18.4036 19.3517 18.6658C19.3494 18.928 19.2442 19.1788 19.0588 19.3642C18.8734 19.5496 18.6226 19.6548 18.3604 19.657C18.0982 19.6593 17.8456 19.5585 17.657 19.3764L16.95 18.6694C16.7678 18.4808 16.667 18.2282 16.6693 17.966C16.6716 17.7038 16.7768 17.4529 16.9622 17.2675C17.1476 17.0821 17.3984 16.977 17.6606 16.9747C17.9228 16.9724 18.1754 17.0732 18.364 17.2554ZM5.63599 17.2554C5.81595 17.076 6.05743 16.9719 6.31137 16.9641C6.56532 16.9564 6.8127 17.0456 7.00327 17.2136C7.19384 17.3816 7.3133 17.6159 7.33739 17.8688C7.36148 18.1218 7.2884 18.3744 7.13299 18.5754L7.04999 18.6694L6.34299 19.3764C6.16303 19.5557 5.92156 19.6598 5.66761 19.6676C5.41366 19.6753 5.16628 19.5861 4.97571 19.4181C4.78515 19.2501 4.66569 19.0158 4.64159 18.7629C4.6175 18.51 4.69058 18.2573 4.84599 18.0564L4.92899 17.9624L5.63599 17.2554ZM12 6.30536C13.5913 6.30536 15.1174 6.9375 16.2426 8.06272C17.3679 9.18794 18 10.7141 18 12.3054C18 13.8967 17.3679 15.4228 16.2426 16.548C15.1174 17.6732 13.5913 18.3054 12 18.3054C10.4087 18.3054 8.88257 17.6732 7.75735 16.548C6.63213 15.4228 5.99999 13.8967 5.99999 12.3054C5.99999 10.7141 6.63213 9.18794 7.75735 8.06272C8.88257 6.9375 10.4087 6.30536 12 6.30536ZM12 8.30536C10.9391 8.30536 9.92171 8.72679 9.17156 9.47693C8.42142 10.2271 7.99999 11.2445 7.99999 12.3054C7.99999 13.3662 8.42142 14.3836 9.17156 15.1338C9.92171 15.8839 10.9391 16.3054 12 16.3054C13.0609 16.3054 14.0783 15.8839 14.8284 15.1338C15.5786 14.3836 16 13.3662 16 12.3054C16 11.2445 15.5786 10.2271 14.8284 9.47693C14.0783 8.72679 13.0609 8.30536 12 8.30536ZM3.99999 11.3054C4.25487 11.3056 4.50002 11.4032 4.68536 11.5782C4.8707 11.7532 4.98223 11.9923 4.99716 12.2468C5.0121 12.5012 4.92932 12.7517 4.76573 12.9472C4.60214 13.1426 4.37009 13.2683 4.11699 13.2984L3.99999 13.3054H2.99999C2.74511 13.3051 2.49996 13.2075 2.31462 13.0325C2.12929 12.8575 2.01776 12.6184 2.00282 12.364C1.98788 12.1095 2.07067 11.859 2.23426 11.6635C2.39785 11.4681 2.62989 11.3425 2.88299 11.3124L2.99999 11.3054H3.99999ZM21 11.3054C21.2652 11.3054 21.5196 11.4107 21.7071 11.5983C21.8946 11.7858 22 12.0401 22 12.3054C22 12.5706 21.8946 12.8249 21.7071 13.0125C21.5196 13.2 21.2652 13.3054 21 13.3054H20C19.7348 13.3054 19.4804 13.2 19.2929 13.0125C19.1053 12.8249 19 12.5706 19 12.3054C19 12.0401 19.1053 11.7858 19.2929 11.5983C19.4804 11.4107 19.7348 11.3054 20 11.3054H21ZM4.92899 5.23436C5.10118 5.06218 5.33028 4.95875 5.57331 4.94347C5.81634 4.92819 6.05659 5.00211 6.24899 5.15136L6.34299 5.23436L7.04999 5.94136C7.22934 6.12132 7.33346 6.36279 7.34122 6.61674C7.34897 6.87069 7.25978 7.11807 7.09174 7.30864C6.92371 7.4992 6.68944 7.61866 6.43652 7.64276C6.18359 7.66685 5.93098 7.59377 5.72999 7.43836L5.63599 7.35536L4.92899 6.64836C4.74152 6.46083 4.6362 6.20652 4.6362 5.94136C4.6362 5.67619 4.74152 5.42189 4.92899 5.23436ZM19.071 5.23436C19.2585 5.42189 19.3638 5.67619 19.3638 5.94136C19.3638 6.20652 19.2585 6.46083 19.071 6.64836L18.364 7.35536C18.2717 7.45087 18.1614 7.52705 18.0394 7.57946C17.9174 7.63187 17.7862 7.65946 17.6534 7.66061C17.5206 7.66176 17.3889 7.63646 17.266 7.58618C17.1431 7.5359 17.0315 7.46165 16.9376 7.36775C16.8437 7.27386 16.7695 7.16221 16.7192 7.03931C16.6689 6.91642 16.6436 6.78474 16.6447 6.65196C16.6459 6.51918 16.6735 6.38796 16.7259 6.26595C16.7783 6.14395 16.8545 6.03361 16.95 5.94136L17.657 5.23436C17.8445 5.04689 18.0988 4.94157 18.364 4.94157C18.6292 4.94157 18.8835 5.04689 19.071 5.23436ZM12 2.30536C12.2652 2.30536 12.5196 2.41072 12.7071 2.59825C12.8946 2.78579 13 3.04014 13 3.30536V4.30536C13 4.57058 12.8946 4.82493 12.7071 5.01247C12.5196 5.2 12.2652 5.30536 12 5.30536C11.7348 5.30536 11.4804 5.2 11.2929 5.01247C11.1053 4.82493 11 4.57058 11 4.30536V3.30536C11 3.04014 11.1053 2.78579 11.2929 2.59825C11.4804 2.41072 11.7348 2.30536 12 2.30536Z" fill="#111111  "/>
             </svg>
           </span>
         </div>
+        <!-- End of Dark Mode Button -->
       </div>
     </header>
     <!-- End of Header on Main Board -->
@@ -261,7 +344,7 @@
               <h5 class="font-bold text-lg">Share</h5>
             </div>
             <div class="flex items-center justify-between">
-              <h4 class="font-bold text-[28px]">89,773</h4>
+              <h4 class="font-bold text-[28px]">89,773</h4> 
               <span class="px-2 py-1 rounded-[10px] bg-error-secondary text-error">
                 <p class="font-bold text-sm">-4%</p>
               </span>
@@ -372,9 +455,9 @@
               <div class="h-0.5 w-full bg-stroke"></div>
             </span>
           </div>
-          <div aria-label="bar-graph" class="absolute -bottom-[20px] left-[65px] flex items-end gap-x-6">
+          <div aria-label="bar-graph" id="bar-graph" class="absolute -bottom-[20px] left-[65px] flex items-end gap-x-6">
             <div aria-label="bar-graph-jan" class="flex flex-col gap-y-2.5 items-center">
-              <div class="flex items-baseline">
+              <div class="flex items-baseline month-graph">
                 <div class="w-[20px] h-[51px] bg-purple rounded-t-[6px]"></div>
                 <div class="w-[20px] h-[71px] bg-success-tertiary rounded-t-[6px]"></div>
                 <div class="w-[20px] h-[28px] bg-info-tertiary rounded-t-[6px]"></div>
@@ -382,7 +465,7 @@
               <h5 class="font-medium text-sm text-text-secondary">Jan</h5>
             </div>
             <div aria-label="bar-graph-feb" class="flex flex-col gap-y-2.5 items-center">
-              <div class="flex items-baseline">
+              <div class="flex items-baseline month-graph">
                 <div class="w-[20px] h-[51px] bg-purple rounded-t-[6px]"></div>
                 <div class="w-[20px] h-[116px] bg-success-tertiary rounded-t-[6px]"></div>
                 <div class="w-[20px] h-[78px] bg-info-tertiary rounded-t-[6px]"></div>
@@ -390,7 +473,7 @@
               <h5 class="font-medium text-sm text-text-secondary">Feb</h5>
             </div>
             <div aria-label="bar-graph-mar" class="flex flex-col gap-y-2.5 items-center">
-              <div class="flex items-baseline">
+              <div class="flex items-baseline month-graph">
                 <div class="w-[20px] h-[119px] bg-purple rounded-t-[6px]"></div>
                 <div class="w-[20px] h-[176px] bg-success-tertiary rounded-t-[6px]"></div>
                 <div class="w-[20px] h-[81px] bg-info-tertiary rounded-t-[6px]"></div>
@@ -398,7 +481,7 @@
               <h5 class="font-medium text-sm text-text-secondary">Mar</h5>
             </div>
             <div aria-label="bar-graph-apr" class="flex flex-col gap-y-2.5 items-center">
-              <div class="flex items-baseline">
+              <div class="flex items-baseline month-graph">
                 <div class="w-[20px] h-[78px] bg-purple rounded-t-[6px]"></div>
                 <div class="w-[20px] h-[116px] bg-success-tertiary rounded-t-[6px]"></div>
                 <div class="w-[20px] h-[28px] bg-info-tertiary rounded-t-[6px]"></div>
@@ -406,7 +489,7 @@
               <h5 class="font-medium text-sm text-text-secondary">Apr</h5>
             </div>
             <div aria-label="bar-graph-may" class="flex flex-col gap-y-2.5 items-center">
-              <div class="flex items-baseline">
+              <div class="flex items-baseline month-graph">
                 <div class="w-[20px] h-[43px] bg-purple rounded-t-[6px]"></div>
                 <div class="w-[20px] h-[105px] bg-success-tertiary rounded-t-[6px]"></div>
                 <div class="w-[20px] h-[147px] bg-info-tertiary rounded-t-[6px]"></div>
@@ -414,7 +497,7 @@
               <h5 class="font-medium text-sm text-text-secondary">May</h5>
             </div>
             <div aria-label="bar-graph-jun" class="flex flex-col gap-y-2.5 items-center">
-              <div class="flex items-baseline">
+              <div class="flex items-baseline month-graph">
                 <div class="w-[20px] h-[125px] bg-purple rounded-t-[6px]"></div>
                 <div class="w-[20px] h-[51px] bg-success-tertiary rounded-t-[6px]"></div>
                 <div class="w-[20px] h-[82px] bg-info-tertiary rounded-t-[6px]"></div>
@@ -422,7 +505,7 @@
               <h5 class="font-medium text-sm text-text-secondary">Jun</h5>
             </div>
             <div aria-label="bar-graph-jul" class="flex flex-col gap-y-2.5 items-center">
-              <div class="flex items-baseline">
+              <div class="flex items-baseline month-graph">
                 <div class="w-[20px] h-[51px] bg-purple rounded-t-[6px]"></div>
                 <div class="w-[20px] h-[71px] bg-success-tertiary rounded-t-[6px]"></div>
                 <div class="w-[20px] h-[28px] bg-info-tertiary rounded-t-[6px]"></div>
@@ -430,7 +513,7 @@
               <h5 class="font-medium text-sm text-text-secondary">Jul</h5>
             </div>
             <div aria-label="bar-graph-jul" class="flex flex-col gap-y-2.5 items-center">
-              <div class="flex items-baseline">
+              <div class="flex items-baseline month-graph">
                 <div class="w-[20px] h-[149px] bg-purple rounded-t-[6px]"></div>
                 <div class="w-[20px] h-[137px] bg-success-tertiary rounded-t-[6px]"></div>
                 <div class="w-[20px] h-[76px] bg-info-tertiary rounded-t-[6px]"></div>
@@ -438,7 +521,7 @@
               <h5 class="font-medium text-sm text-text-secondary">Aug</h5>
             </div>
             <div aria-label="bar-graph-sep" class="flex flex-col gap-y-2.5 items-center">
-              <div class="flex items-baseline">
+              <div class="flex items-baseline month-graph">
                 <div class="w-[20px] h-[78px] bg-purple rounded-t-[6px]"></div>
                 <div class="w-[20px] h-[124px] bg-success-tertiary rounded-t-[6px]"></div>
                 <div class="w-[20px] h-[28px] bg-info-tertiary rounded-t-[6px]"></div>
@@ -446,7 +529,7 @@
               <h5 class="font-medium text-sm text-text-secondary">Sep</h5>
             </div>
             <div aria-label="bar-graph-oct" class="flex flex-col gap-y-2.5 items-center">
-              <div class="flex items-baseline">
+              <div class="flex items-baseline month-graph">
                 <div class="w-[20px] h-[50px] bg-purple rounded-t-[6px]"></div>
                 <div class="w-[20px] h-[37px] bg-success-tertiary rounded-t-[6px]"></div>
                 <div class="w-[20px] h-[90px] bg-info-tertiary rounded-t-[6px]"></div>
@@ -454,7 +537,7 @@
               <h5 class="font-medium text-sm text-text-secondary">Oct</h5>
             </div>
             <div aria-label="bar-graph-nov" class="flex flex-col gap-y-2.5 items-center">
-              <div class="flex items-baseline">
+              <div class="flex items-baseline month-graph">
                 <div class="w-[20px] h-[30px] bg-purple rounded-t-[6px]"></div>
                 <div class="w-[20px] h-[55px] bg-success-tertiary rounded-t-[6px]"></div>
                 <div class="w-[20px] h-[67px] bg-info-tertiary rounded-t-[6px]"></div>
@@ -462,7 +545,7 @@
               <h5 class="font-medium text-sm text-text-secondary">Nov</h5>
             </div>
             <div aria-label="bar-graph-nov" class="flex flex-col gap-y-2.5 items-center">
-              <div class="flex items-baseline">
+              <div class="flex items-baseline month-graph">
                 <div class="w-[20px] h-[80px] bg-purple rounded-t-[6px]"></div>
                 <div class="w-[20px] h-[67px] bg-success-tertiary rounded-t-[6px]"></div>
                 <div class="w-[20px] h-[40px] bg-info-tertiary rounded-t-[6px]"></div>
@@ -470,7 +553,7 @@
               <h5 class="font-medium text-sm text-text-secondary">Des</h5>
             </div>
           </div>
-          <div aria-label="data-info" class="absolute z-10 bottom-[10px] left-[346px] flex">
+          <div aria-label="data-info" id="data-info" class="absolute z-10 bottom-[10px] left-[346px] flex">
             <div class="w-[3px] h-[184px] bg-white"></div>
             <div class="flex items-center gap-x-4 h-fit -mt-4 -ml-[7px]">
               <div class="w-3 h-3 rounded-full bg-white"></div>
@@ -586,4 +669,25 @@
   </main>
   <!-- End of Main Board -->
 </body>
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+  const monthGraph = document.querySelectorAll(".month-graph");
+  const dataInfo = document.querySelector("#data-info");
+  
+  setTimeout(() => {
+    handleInitGraph(monthGraph);
+  }, 1000);
+
+  setTimeout(() => {
+    dataInfo.classList.add("active");
+  }, 1500);
+  });
+
+  function handleInitGraph(monthGraph)  {
+    for(let i = 0; i < monthGraph.length; i++) {
+      const element = monthGraph[i];
+      element.classList.remove("month-graph");
+    }
+  }
+</script>
 </html>
